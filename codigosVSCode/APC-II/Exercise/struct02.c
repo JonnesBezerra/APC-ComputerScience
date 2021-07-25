@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-
 // complete as funções restantes!
-
 typedef struct aluno{
    int matricula;
    float notas[3];
@@ -30,7 +27,7 @@ int main(){
         ImprimeTurma(&turma[i]);
     }
     
-    for(i=0; i< 5; i++){
+    for(i=0; i < 5; i++){
         // media = CalculaMediaAluno(.......);// função que calcula a média das notas de um aluno
         media = CalculaMediaAluno(turma[i].notas);
         printf("Aluno %d  - Media = %.2f\n", turma[i].matricula, media); // imprime os dados do aluno
@@ -59,5 +56,5 @@ float CalculaMediaAluno(float notas[]){
     for (int i = 0; i < 3; i++){
         soma += notas[i];
     }
-    return (soma/3);
+    return soma/3.0;
 }

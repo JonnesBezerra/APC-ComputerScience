@@ -1,15 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct aluno{
-    float n1,n2;
-}aluno;
+#include<stdio.h>
+#include<stdlib.h>
 
 int main(){
-    char name;
-    printf("Nome: ");
-    scanf("%c", name);
-    printf("Nome: %s", name);
-    
+
+    char c;
+
+    c = fgetc(stdin);
+    printf("%c", c);
+
     return 0;
+
 }

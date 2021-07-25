@@ -15,7 +15,7 @@ int funcao1(int x){
     funcao2(&x);
     printf("%d \n", x);
     
-    return y;
+    return x;
 }
 
 

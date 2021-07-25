@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 /*
 Crie um programa que permita armazenar o nome, a altura e da data de nascimento de até 10 pessoas. 
 Cada pessoa deve ser representada por uma struct dentro de um vetor. 
@@ -15,6 +13,9 @@ A geração da data de nascimento deve ser feita aleatoriamente através da fun�
 Cada uma destas opções deve ser implementada em uma função separada.
 Para realizar o exercício, utilize como base o programa apresentado abaixo.
 */
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct Data{
     int dia, mes, ano;
 } Data;
@@ -25,9 +26,9 @@ void CriaData(Data *D){
     D->dia = 1 + (rand() % 30);
 }
 
-typedef struct{
+typedef struct Pessoa{
     long int matricula;
-    char nome;
+    char nome[21];
     float altura;
     Data nascimento;
 } Pessoa;
@@ -35,10 +36,11 @@ typedef struct{
 void ImprimeTelaDeOpcoes();
 int EscolheOpcao();
 void LePessoaDeTeclado(Pessoa *p);
-void AdicionaPessoa(Pessoa povo[], Pessoa p, int qtdPessoas);
+void AdicionaPessoa(Pessoa povo[], Pessoa p, int qtdPessoas, int *quantidade);
 void LeDataDeTeclado(Data *dia);
 void ImprimeMaisVelhos(Pessoa povo[], int qtdPessoas, Data dia);
 void ImprimeTodasAsPessoas(Pessoa povo[], int qtdPessoas);
+void quantidade(int *qtdPessoas);
 
 int main(){
     Pessoa povo[10];
@@ -51,12 +53,10 @@ int main(){
         opcao = EscolheOpcao();
         if (opcao == 1){
             LePessoaDeTeclado(&p);
-            AdicionaPessoa(povo, p, qtdPessoas);
-        }
-        if (opcao == 2){
+            AdicionaPessoa(povo, p, qtdPessoas, &qtdPessoas);
+        } else if (opcao == 2){
             ImprimeTodasAsPessoas(povo, qtdPessoas);
-        }
-        if (opcao == 3){
+        } else if (opcao == 3){
             LeDataDeTeclado(&dia);
             ImprimeMaisVelhos(povo, qtdPessoas, dia);
         }
@@ -73,6 +73,7 @@ void ImprimeTelaDeOpcoes(){
 
 int EscolheOpcao(){
     int opcao;
+    printf("Digite a opcao: ");
     scanf("%d", &opcao);
     return opcao;
 }
@@ -86,27 +87,29 @@ void LePessoaDeTeclado(Pessoa *p){
     scanf("%f", &p->altura);
     printf("Data de Nascimento: ");
     CriaData(&p->nascimento);
-    
     printf("%d / %d / %d \n", p->nascimento.dia, p->nascimento.mes,  p->nascimento.ano);
 }
 
-void AdicionaPessoa(Pessoa povo[], Pessoa p, int qtdPessoas){
+void AdicionaPessoa(Pessoa povo[], Pessoa p, int qtdPessoas, int *quantidade){
     povo[qtdPessoas].matricula = p.matricula;
-    povo[qtdPessoas].nome = p.nome;
+    for (int i = 0; i < 21; i++){
+        povo[qtdPessoas].nome[i] = p.nome[i];
+    }
     povo[qtdPessoas].altura = p.altura;
     povo[qtdPessoas].nascimento.dia = p.nascimento.dia;
     povo[qtdPessoas].nascimento.mes = p.nascimento.mes;
     povo[qtdPessoas].nascimento.ano = p.nascimento.ano;
-    qtdPessoas++;
+    *quantidade += 1;
 }
 
 void ImprimeTodasAsPessoas(Pessoa povo[], int qtdPessoas){
-    for (int i = 0; i < qtdPessoas; i++){
+    for (int i = 0; i < 3; i++){
+        printf("------------------------------\n");
         printf("Matricula: %ld\n", povo[i].matricula);
         printf("Nome: %s\n", povo[i].nome);
         printf("Altura: %f\n", povo[i].altura);
         printf("Data de Nascimento: %d/%d/%d\n", povo[i].nascimento.dia, povo[i].nascimento.mes, povo[i].nascimento.ano);
-        printf("----------------------------------\n");
+        printf("------------------------------\n");
     }
 }
 
@@ -122,11 +125,13 @@ void LeDataDeTeclado(Data *dia){
 void ImprimeMaisVelhos(Pessoa povo[], int qtdPessoas, Data dia){
     for (int i = 0; i < qtdPessoas; i++){
         if (povo[i].nascimento.ano < dia.ano){
-            printf("Nome: %s Data de Nascimento: %d", povo[i].nome, povo[i].nascimento);
+            printf("Nome: %s Data de Nascimento: %d/%d/%d \n", povo[i].nome, povo[i].nascimento.dia, povo[i].nascimento.mes, povo[i].nascimento.ano);
         } else if ((povo[i].nascimento.ano == dia.ano) && (povo[i].nascimento.mes < dia.mes)){
-            printf("Nome: %s Data de Nascimento: %d", povo[i].nome, povo[i].nascimento);
+            printf("Nome: %s Data de Nascimento: %d/%d/%d \n", povo[i].nome, povo[i].nascimento.dia, povo[i].nascimento.mes, povo[i].nascimento.ano);
         } else if ((povo[i].nascimento.mes == dia.mes) && (povo[i].nascimento.dia < dia.dia)){
-            printf("Nome: %s Data de Nascimento: %d", povo[i].nome, povo[i].nascimento);
+            printf("Nome: %s Data de Nascimento: %d/%d/%d \n", povo[i].nome, povo[i].nascimento.dia, povo[i].nascimento.mes, povo[i].nascimento.ano);
+        } else {
+            printf("Ninguem nasceu antes desta data.\n");
         }
     }
 }

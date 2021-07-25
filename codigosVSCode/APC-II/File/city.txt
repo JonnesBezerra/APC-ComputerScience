@@ -1,0 +1,5 @@
+Brasilia 100
+London 200
+LosAngeles 150
+Paris 175
+Barcelona 190
